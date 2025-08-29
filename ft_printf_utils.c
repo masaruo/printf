@@ -38,7 +38,7 @@ ssize_t	ft_putchar_cnt_pf(int fd, char c)
 	ssize_t	n;
 	(void) fd;
 
-	n = write(STDOUT_FILENO, &c, 1);
+	n = write(fd, &c, 1);
 	return (n);
 }
 
