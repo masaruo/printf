@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_utils.h"
+#include "stddef.h"
+#include "unistd.h"
 
 // outputs the string 's' to the file 'fd'
 ssize_t	ft_putstr_cnt_pf(int fd, char *s)
@@ -45,30 +47,30 @@ ssize_t	ft_putchar_cnt_pf(int fd, char c)
 // remember to pass va_list ap as a pointer so that va_arg can move forward
 ssize_t	ft_arg_handler_pf(int fd, char c, va_list *ap)
 {
-	ssize_t	n;
+	ssize_t	len;
 
-	n = 0;
+	len = 0;
 	if (c == '%')
-		n = ft_putchar_cnt_pf(fd, '%');
+		len = ft_putchar_cnt_pf(fd, '%');
 	else if (c == 'c')
-		n = ft_putchar_cnt_pf(fd, va_arg(*ap, int));
+		len = ft_putchar_cnt_pf(fd, va_arg(*ap, int));
 	else if (c == 's')
-		n = ft_putstr_cnt_pf(fd, va_arg(*ap, char *));
+		len = ft_putstr_cnt_pf(fd, va_arg(*ap, char *));
 	else if (c == 'p')
 	{
-		n = ft_putstr_cnt_pf(fd, "0x");
-		n += ft_putnbr_pf(fd, va_arg(*ap, unsigned long), 16, \
+		len = ft_putstr_cnt_pf(fd, "0x");
+		len += ft_putnbr_pf(fd, va_arg(*ap, unsigned long), 16, \
 													"0123456789abcdef");
 	}
 	else if (c == 'd' || c == 'i')
-		n = ft_putnbr_int_pf(fd, va_arg(*ap, int));
+		len = ft_putnbr_int_pf(fd, va_arg(*ap, int));
 	else if (c == 'u')
-		n = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 10, "0123456789");
+		len = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 10, "0123456789");
 	else if (c == 'x')
-		n = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 16, "0123456789abcdef");
+		len = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 16, "0123456789abcdef");
 	else if (c == 'X')
-		n = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 16, "0123456789ABCDEF");
-	return (n);
+		len = ft_putnbr_pf(fd, va_arg(*ap, unsigned int), 16, "0123456789ABCDEF");
+	return (len);
 }
 
 /* https://stackoverflow.com/questions/3369588/
